@@ -1,0 +1,19 @@
+{
+  "name": "smart-budget",
+  "version": "1.0.0",
+  "description": "Smart Budget - Personal Finance Management System",
+  "private": true,
+  "scripts": {
+    "dev":            "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend":    "cd backend && npm run dev",
+    "dev:frontend":   "cd frontend && npm run dev",
+    "install:all":    "npm install --prefix backend && npm install --prefix frontend",
+    "db:migrate":     "cd backend && npx prisma migrate dev",
+    "db:seed":        "cd backend && npm run db:seed",
+    "db:studio":      "cd backend && npx prisma studio",
+    "build:frontend": "cd frontend && npm run build"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}
