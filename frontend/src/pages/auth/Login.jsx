@@ -20,6 +20,7 @@ const Login = () => {
   const navigate     = useNavigate();
   const [showPwd, setShowPwd] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loginError, setLoginError] = useState('');
 
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: zodResolver(schema),
@@ -27,10 +28,25 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     setLoading(true);
+    setLoginError('');
+
     try {
       const user = await login(data);
-      navigate(user.role === 'ADMIN' ? '/admin/users' : '/dashboard', { replace: true });
-    } catch {} finally { setLoading(false); }
+
+      navigate(
+        user.role === 'ADMIN'
+          ? '/admin/users'
+          : '/dashboard',
+        { replace: true }
+      );
+    } catch (error) {
+      setLoginError(
+        error.response?.data?.message ||
+        "Email yoki parol noto'g'ri."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -95,6 +111,11 @@ const Login = () => {
               error={errors.password?.message}
               {...register('password')}
             />
+            {loginError && (
+              <div className="rounded-lg bg-red-100 border border-red-300 text-red-700 px-4 py-3 text-sm">
+                {loginError}
+              </div>
+            )}
             <Button type="submit" loading={loading} className="w-full" size="lg">
               {t('auth.signIn')}
             </Button>
