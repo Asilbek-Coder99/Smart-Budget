@@ -58,8 +58,7 @@ const authLimiter = rateLimit({
 // CORS configuration
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://smart-budget1.netlify.app",
-  "https://smart-budget.netlify.app",
+  process.env.CLIENT_URL,
 ];
 
 app.use(
