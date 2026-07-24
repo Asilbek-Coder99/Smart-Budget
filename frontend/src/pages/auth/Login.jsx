@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { HiMail, HiLockClosed, HiEye, HiEyeOff, HiSparkles } from 'react-icons/hi';
 import { useAuth } from '../../contexts/AuthContext.jsx';
 import { useLang } from '../../contexts/LanguageContext.jsx';
+import { useTheme } from '../../contexts/ThemeContext.jsx';
 import Button  from '../../components/ui/Button.jsx';
 import Input   from '../../components/ui/Input.jsx';
 
@@ -17,10 +18,12 @@ const schema = z.object({
 const Login = () => {
   const { login }    = useAuth();
   const { t, lang, changeLang, languages } = useLang();
+  console.log(lang, t('auth.invalidLogin'));
   const navigate     = useNavigate();
   const [showPwd, setShowPwd] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loginError, setLoginError] = useState('');
+  const { isDark, toggleTheme } = useTheme();
 
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: zodResolver(schema),
