@@ -5,6 +5,7 @@ import { z } from 'zod';
 import toast from 'react-hot-toast';
 import { HiCamera, HiUser, HiLockClosed, HiGlobe, HiCurrencyDollar } from 'react-icons/hi';
 import { userService, authService } from '../../api/services.js';
+import { useLang } from '../../contexts/LanguageContext.jsx';
 import { useAuth } from '../../contexts/AuthContext.jsx';
 import Button from '../../components/ui/Button.jsx';
 import Input from '../../components/ui/Input.jsx';
@@ -30,6 +31,7 @@ const pwSchema = z.object({
 const CURRENCIES = ['USD','EUR','GBP','JPY','CAD','AUD','CHF','CNY','INR','UZS','RUB','KZT'].map(c => ({value:c, label:c}));
 
 const Profile = () => {
+  const { t } = useLang();
   const { user, updateUser } = useAuth();
   const [profileLoading, setPL] = useState(false);
   const [pwLoading, setPwL]     = useState(false);
@@ -127,16 +129,16 @@ const Profile = () => {
         <h2 className="section-title mb-5 flex items-center gap-2"><HiUser className="w-5 h-5"/> Personal Information</h2>
         <form onSubmit={profileForm.handleSubmit(onProfileSubmit)} className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
-            <Input label="First Name" error={profileForm.formState.errors.firstName?.message} {...profileForm.register('firstName')}/>
-            <Input label="Last Name"  error={profileForm.formState.errors.lastName?.message}  {...profileForm.register('lastName')}/>
+            <Input label={t('profile.firstName')} error={profileForm.formState.errors.firstName?.message} {...profileForm.register('firstName')}/>
+            <Input label={t('profile.lastName')}  error={profileForm.formState.errors.lastName?.message}  {...profileForm.register('lastName')}/>
           </div>
-          <Input label="Username" leftIcon={<span className="text-gray-400 text-sm font-medium">@</span>}
+          <Input label={t('auth.username')} leftIcon={<span className="text-gray-400 text-sm font-medium">@</span>}
             error={profileForm.formState.errors.username?.message} {...profileForm.register('username')}/>
           <Input label="Email" value={user?.email || ''} disabled
-            hint="Email cannot be changed" className="opacity-60 cursor-not-allowed"/>
+            hint={t('profile.emailNoChange')} className="opacity-60 cursor-not-allowed"/>
           <div className="grid grid-cols-2 gap-3">
-            <Select label="Currency" options={CURRENCIES} error={profileForm.formState.errors.currency?.message} {...profileForm.register('currency')}/>
-            <Input label="Timezone" placeholder="UTC" error={profileForm.formState.errors.timezone?.message} {...profileForm.register('timezone')}/>
+            <Select label={t('profile.currency')} options={CURRENCIES} error={profileForm.formState.errors.currency?.message} {...profileForm.register('currency')}/>
+            <Input label={t('profile.timezone')} placeholder="UTC" error={profileForm.formState.errors.timezone?.message} {...profileForm.register('timezone')}/>
           </div>
           <div className="flex justify-end pt-2">
             <Button type="submit" loading={profileLoading}>Save Changes</Button>
@@ -148,11 +150,11 @@ const Profile = () => {
       <Card className="p-6">
         <h2 className="section-title mb-5 flex items-center gap-2"><HiLockClosed className="w-5 h-5"/> Change Password</h2>
         <form onSubmit={pwForm.handleSubmit(onPwSubmit)} className="space-y-4">
-          <Input label="Current Password" type="password" placeholder="Enter current password"
+          <Input label={t('profile.currentPwd')} type="password" placeholder="Enter current password"
             error={pwForm.formState.errors.currentPassword?.message} {...pwForm.register('currentPassword')}/>
-          <Input label="New Password" type="password" placeholder="Min 8 chars, uppercase, number"
+          <Input label={t('profile.newPwd')} type="password" placeholder="Min 8 chars, uppercase, number"
             error={pwForm.formState.errors.newPassword?.message} {...pwForm.register('newPassword')}/>
-          <Input label="Confirm Password" type="password" placeholder="Repeat new password"
+          <Input label={t('profile.confirmPwd')} type="password" placeholder="Repeat new password"
             error={pwForm.formState.errors.confirmPassword?.message} {...pwForm.register('confirmPassword')}/>
           <div className="flex justify-end pt-2">
             <Button type="submit" loading={pwLoading} variant="secondary">Change Password</Button>

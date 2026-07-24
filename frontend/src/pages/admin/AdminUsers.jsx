@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { HiSearch, HiTrash, HiBan, HiCheckCircle, HiUser, HiShieldCheck } from 'react-icons/hi';
+import { useLang } from '../../contexts/LanguageContext.jsx';
 import { adminService } from '../../api/services.js';
 import { useQuery } from '../../hooks/useQuery.js';
 import Button from '../../components/ui/Button.jsx';
@@ -14,6 +15,7 @@ import { cn } from '../../utils/helpers.js';
 import toast from 'react-hot-toast';
 
 const AdminUsers = () => {
+  const { t } = useLang();
   const [search, setSearch]         = useState('');
   const [page, setPage]             = useState(1);
   const [deleteUser, setDeleteUser] = useState(null);
@@ -71,7 +73,7 @@ const AdminUsers = () => {
       )}
 
       {/* Search */}
-      <Input placeholder="Search users by name, email or username..."
+      <Input placeholder={t('transactions.searchPlaceholder')}
         leftIcon={<HiSearch className="w-4 h-4"/>}
         value={search} onChange={e => { setSearch(e.target.value); setPage(1); }}/>
 
@@ -133,7 +135,7 @@ const AdminUsers = () => {
                           {user.isActive ? <HiBan className="w-4 h-4"/> : <HiCheckCircle className="w-4 h-4"/>}
                         </button>
                         <button onClick={() => setDeleteUser(user)}
-                          className="p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-500 transition-colors" title="Delete">
+                          className="p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-500 transition-colors" title={t('common.delete')}>
                           <HiTrash className="w-4 h-4"/>
                         </button>
                       </div>
@@ -141,7 +143,7 @@ const AdminUsers = () => {
                   </tr>
                 ))
               ) : (
-                <tr><td colSpan={6}><EmptyState icon="👥" title="No users found"/></td></tr>
+                <tr><td colSpan={6}><EmptyState icon="👥" title={t('admin.noUsers')}/></td></tr>
               )}
             </tbody>
           </table>
@@ -159,7 +161,7 @@ const AdminUsers = () => {
         )}
       </div>
 
-      <Modal isOpen={!!deleteUser} onClose={() => setDeleteUser(null)} title="Delete User" size="sm">
+      <Modal isOpen={!!deleteUser} onClose={() => setDeleteUser(null)} title={t('admin.deleteUser')} size="sm">
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
           Permanently delete <span className="font-semibold">{deleteUser?.firstName} {deleteUser?.lastName}</span>?
         </p>

@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { HiPlus, HiPencil, HiTrash, HiCash } from 'react-icons/hi';
 import { savingsGoalService } from '../../api/services.js';
 import { useQuery } from '../../hooks/useQuery.js';
+import { useLang } from '../../contexts/LanguageContext.jsx';
 import { useAuth } from '../../contexts/AuthContext.jsx';
 import Button from '../../components/ui/Button.jsx';
 import Input from '../../components/ui/Input.jsx';
@@ -29,6 +30,7 @@ const schema = z.object({
 });
 
 const GoalForm = ({ goal, onClose, onSuccess }) => {
+  const { t } = useLang();
   const isEdit = !!goal;
   const [icon, setIcon]   = useState(goal?.icon || '🎯');
   const [color, setColor] = useState(goal?.color || '#10b981');
@@ -56,11 +58,11 @@ const GoalForm = ({ goal, onClose, onSuccess }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <Input label="Goal Name" placeholder="e.g. Emergency Fund" error={errors.name?.message} {...register('name')} />
-      <Input label="Target Amount ($)" type="number" step="0.01" min="1" placeholder="5000.00"
+      <Input label={t('common.name')} placeholder="e.g. Emergency Fund" error={errors.name?.message} {...register('name')} />
+      <Input label={t('savings.targetAmount')+' ($)'} type="number" step="0.01" min="1" placeholder="5000.00"
         error={errors.targetAmount?.message} {...register('targetAmount')} />
-      <Input label="Description (optional)" placeholder="What are you saving for?" error={errors.description?.message} {...register('description')} />
-      <Input label="Deadline (optional)" type="date" error={errors.deadline?.message} {...register('deadline')} />
+      <Input label={t('common.description')+' ('+t('common.optional')+')'} placeholder="What are you saving for?" error={errors.description?.message} {...register('description')} />
+      <Input label={t('savings.deadline')+' ('+t('common.optional')+')'} type="date" error={errors.deadline?.message} {...register('deadline')} />
 
       <div>
         <label className="label">Icon</label>
@@ -95,6 +97,7 @@ const GoalForm = ({ goal, onClose, onSuccess }) => {
 };
 
 const ContributeModal = ({ goal, onClose, onSuccess, currency }) => {
+  const { t } = useLang();
   const [amount, setAmount] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -112,7 +115,7 @@ const ContributeModal = ({ goal, onClose, onSuccess, currency }) => {
   const remaining = goal.targetAmount - goal.currentAmount;
 
   return (
-    <Modal isOpen={!!goal} onClose={onClose} title="Add Contribution" size="sm">
+    <Modal isOpen={!!goal} onClose={onClose} title={t('savings.addContrib')} size="sm">
       <div className="space-y-4">
         <div className="p-4 rounded-xl text-center" style={{ background: goal?.color + '15' }}>
           <span className="text-4xl">{goal?.icon}</span>
@@ -224,6 +227,7 @@ const GoalCard = ({ goal, currency, onEdit, onDelete, onContribute }) => {
 
 const Savings = () => {
   const { user } = useAuth();
+  const { t } = useLang();
   const currency = user?.currency || 'USD';
   const [modalOpen, setModalOpen]       = useState(false);
   const [editGoal, setEditGoal]         = useState(null);
@@ -257,7 +261,7 @@ const Savings = () => {
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{goals.length} goals · {completed} completed</p>
         </div>
         <Button size="sm" leftIcon={<HiPlus className="w-4 h-4"/>}
-          onClick={() => { setEditGoal(null); setModalOpen(true); }}>New Goal</Button>
+          onClick={() => { setEditGoal(null); setModalOpen(true); }}>{t('savings.newGoal')}</Button>
       </div>
 
       {/* Summary */}
@@ -302,9 +306,9 @@ const Savings = () => {
           ))}
         </div>
       ) : (
-        <EmptyState icon="🎯" title="No savings goals yet"
-          description="Start saving for something meaningful"
-          actionLabel="Create Goal" onAction={() => setModalOpen(true)} />
+        <EmptyState icon="🎯" title={t('savings.noGoals')}
+          description={t('savings.startSaving')}
+          actionLabel={t('savings.createGoal')} onAction={() => setModalOpen(true)} />
       )}
 
       <Modal isOpen={modalOpen} onClose={() => { setModalOpen(false); setEditGoal(null); }}

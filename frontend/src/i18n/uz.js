@@ -84,7 +84,7 @@ const uz = {
     transactions:  "Tranzaksiyalar",
     categories:    "Kategoriyalar",
     budgets:       "Budjetlar",
-    savings:       "Jamg'armalar",
+    savings:       "Maqsadlar",
     reports:       "Hisobotlar",
     notifications: "Bildirishnomalar",
     settings:      "Sozlamalar",
@@ -199,6 +199,21 @@ const uz = {
     overallUsed:    "Umumiy foydalanildi",
     month:          "Oy",
     year:           "Yil",
+  },
+
+  months: {
+    january: "Yanvar",
+    february: "Fevral",
+    march: "Mart",
+    april: "Aprel",
+    may: "May",
+    june: "Iyun",
+    july: "Iyul",
+    august: "Avgust",
+    september: "Sentabr",
+    october: "Oktabr",
+    november: "Noyabr",
+    december: "Dekabr"
   },
 
   // Jamg'arma maqsadlari

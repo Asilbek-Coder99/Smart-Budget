@@ -194,6 +194,21 @@ const ru = {
     year:           "Год",
   },
 
+  months: {
+    january: "Январь",
+    february: "Февраль",
+    march: "Март",
+    april: "Апрель",
+    may: "Май",
+    june: "Июнь",
+    july: "Июль",
+    august: "Август",
+    september: "Сентябрь",
+    october: "Октябрь",
+    november: "Ноябрь",
+    december: "Декабрь"
+  },
+
   savings: {
     title:         "Цели накопления",
     newGoal:       "Новая цель",

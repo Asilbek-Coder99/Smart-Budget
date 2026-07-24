@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { HiPlus, HiPencil, HiTrash, HiExclamation } from 'react-icons/hi';
 import { budgetService, categoryService } from '../../api/services.js';
 import { useQuery } from '../../hooks/useQuery.js';
+import { useLang } from '../../contexts/LanguageContext.jsx';
 import { useAuth } from '../../contexts/AuthContext.jsx';
 import Button from '../../components/ui/Button.jsx';
 import Input from '../../components/ui/Input.jsx';
@@ -30,6 +31,7 @@ const MONTHS = Array.from({length:12},(_,i) => ({ value: i+1, label: new Date(20
 const YEARS  = [2023,2024,2025,2026].map(y => ({ value: y, label: String(y) }));
 
 const BudgetForm = ({ budget, onClose, onSuccess }) => {
+  const { t } = useLang();
   const { month, year } = getCurrentMonthYear();
   const [loading, setLoading] = useState(false);
   const isEdit = !!budget;
@@ -60,20 +62,20 @@ const BudgetForm = ({ budget, onClose, onSuccess }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <Input label="Budget Name" placeholder="e.g. Monthly Groceries" error={errors.name?.message} {...register('name')} />
-      <Input label="Budget Limit ($)" type="number" step="0.01" min="1" placeholder="500.00"
+      <Input label={t('common.name')} placeholder="e.g. Monthly Groceries" error={errors.name?.message} {...register('name')} />
+      <Input label={t('budgets.totalBudget')+' ($)'} type="number" step="0.01" min="1" placeholder="500.00"
         error={errors.amount?.message} {...register('amount')} />
-      <Select label="Expense Category" options={catOptions} placeholder="Select category..."
+      <Select label={t('categories.expenseCateg')} options={catOptions} placeholder="Select category..."
         error={errors.categoryId?.message} {...register('categoryId')} />
       <div className="grid grid-cols-2 gap-3">
-        <Select label="Month" options={MONTHS.map(m=>({value:m.value,label:m.label}))}
+        <Select label={t('budgets.month')} options={MONTHS.map(m=>({value:m.value,label:m.label}))}
           error={errors.month?.message} {...register('month')} />
-        <Select label="Year" options={YEARS}
+        <Select label={t('budgets.year')} options={YEARS}
           error={errors.year?.message} {...register('year')} />
       </div>
       <div>
-        <Input label="Alert Threshold (%)" type="number" min="1" max="100" placeholder="80"
-          hint="Get notified when this % of budget is used"
+        <Input label={t('budgets.alertThreshold')} type="number" min="1" max="100" placeholder="80"
+          hint={t('budgets.alertHint')}
           error={errors.alertAt?.message} {...register('alertAt')} />
       </div>
       <div className="flex gap-3 pt-2">
@@ -150,6 +152,7 @@ const BudgetCard = ({ budget, currency, onEdit, onDelete }) => {
 
 const Budgets = () => {
   const { user } = useAuth();
+  const { t } = useLang();
   const currency = user?.currency || 'USD';
   const { month, year } = getCurrentMonthYear();
   const [selMonth, setSelMonth] = useState(month);
@@ -191,7 +194,7 @@ const Budgets = () => {
             {YEARS.map(y => <option key={y.value} value={y.value}>{y.label}</option>)}
           </select>
           <Button size="sm" leftIcon={<HiPlus className="w-4 h-4"/>}
-            onClick={() => { setEditBudget(null); setModalOpen(true); }}>New Budget</Button>
+            onClick={() => { setEditBudget(null); setModalOpen(true); }}>{t('budgets.newBudget')}</Button>
         </div>
       </div>
 
@@ -233,9 +236,9 @@ const Budgets = () => {
           ))}
         </div>
       ) : (
-        <EmptyState icon="🎯" title="No budgets for this month"
-          description="Set a budget to track your spending"
-          actionLabel="Create Budget" onAction={() => setModalOpen(true)} />
+        <EmptyState icon="🎯" title={t('budgets.noBudgets')}
+          description={t('budgets.setBudgetHint')}
+          actionLabel={t('budgets.createBudget')} onAction={() => setModalOpen(true)} />
       )}
 
       <Modal isOpen={modalOpen} onClose={() => { setModalOpen(false); setEditBudget(null); }}
@@ -243,7 +246,7 @@ const Budgets = () => {
         <BudgetForm budget={editBudget} onClose={() => { setModalOpen(false); setEditBudget(null); }} onSuccess={refetch} />
       </Modal>
 
-      <Modal isOpen={!!deleteBudget} onClose={() => setDeleteBudget(null)} title="Delete Budget" size="sm">
+      <Modal isOpen={!!deleteBudget} onClose={() => setDeleteBudget(null)} title={t('common.delete')+' '+t('nav.budgets')} size="sm">
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
           Delete <span className="font-semibold">"{deleteBudget?.name}"</span>? This action cannot be undone.
         </p>

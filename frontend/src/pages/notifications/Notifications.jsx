@@ -9,6 +9,7 @@ import Badge from '../../components/ui/Badge.jsx';
 import { formatTimeAgo } from '../../utils/format.js';
 import { cn } from '../../utils/helpers.js';
 import toast from 'react-hot-toast';
+import { useLang } from '../../contexts/LanguageContext.jsx';
 
 const TYPE_CONFIG = {
   BUDGET_WARNING:  { icon: HiExclamation,      color: 'text-amber-500',  bg: 'bg-amber-50 dark:bg-amber-900/20',   badge: 'warning' },
@@ -19,6 +20,7 @@ const TYPE_CONFIG = {
 };
 
 const NotificationItem = ({ notification, onRead, onDelete }) => {
+  const { t } = useLang();
   const config = TYPE_CONFIG[notification.type] || TYPE_CONFIG.GENERAL;
   const Icon = config.icon;
 
@@ -41,12 +43,12 @@ const NotificationItem = ({ notification, onRead, onDelete }) => {
       <div className="flex gap-1 shrink-0">
         {!notification.isRead && (
           <button onClick={() => onRead(notification.id)}
-            className="p-1.5 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 text-emerald-500 transition-colors" title="Mark as read">
+            className="p-1.5 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 text-emerald-500 transition-colors" title={t('notifications.markRead')}>
             <HiCheck className="w-4 h-4"/>
           </button>
         )}
         <button onClick={() => onDelete(notification.id)}
-          className="p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-400 transition-colors" title="Delete">
+          className="p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-400 transition-colors" title={t('common.delete')}>
           <HiTrash className="w-4 h-4"/>
         </button>
       </div>
@@ -55,6 +57,7 @@ const NotificationItem = ({ notification, onRead, onDelete }) => {
 };
 
 const Notifications = () => {
+  const { t } = useLang();
   const [page, setPage]       = useState(1);
   const [unreadOnly, setUnread] = useState(false);
 
@@ -135,7 +138,7 @@ const Notifications = () => {
           )}
         </>
       ) : (
-        <EmptyState icon="🔔" title="No notifications" description="You're all caught up! Notifications about budgets and goals will appear here." />
+        <EmptyState icon="🔔" title={t('notifications.noNotifs')} description="You're all caught up! Notifications about budgets and goals will appear here." />
       )}
     </div>
   );

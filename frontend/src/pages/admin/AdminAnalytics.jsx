@@ -1,5 +1,6 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 import { HiUsers, HiCash, HiTrendingUp, HiTrendingDown, HiShieldCheck } from 'react-icons/hi';
+import { useLang } from '../../contexts/LanguageContext.jsx';
 import { adminService, analyticsService } from '../../api/services.js';
 import { useQuery } from '../../hooks/useQuery.js';
 import Skeleton from '../../components/ui/Skeleton.jsx';
@@ -9,6 +10,7 @@ import { cn } from '../../utils/helpers.js';
 const COLORS = ['#6366f1','#10b981','#f59e0b','#ef4444','#06b6d4'];
 
 const AdminAnalytics = () => {
+  const { t } = useLang();
   const { data: statsData, loading: statsLoading } = useQuery(() => adminService.getStats(), []);
   const { data: analyticsData, loading: analyticsLoading } = useQuery(
     () => analyticsService.getOverview({ months: 12 }), []
@@ -67,8 +69,8 @@ const AdminAnalytics = () => {
                 <YAxis tickFormatter={v => shortenCurrency(v)} tick={{fontSize:11}} tickLine={false} axisLine={false}/>
                 <Tooltip formatter={v => formatCurrency(v)}/>
                 <Legend iconType="circle" iconSize={8}/>
-                <Bar dataKey="income"  name="Income"  fill="#10b981" radius={[4,4,0,0]} maxBarSize={28}/>
-                <Bar dataKey="expense" name="Expense" fill="#ef4444" radius={[4,4,0,0]} maxBarSize={28}/>
+                <Bar dataKey="income"  name={t('transactions.income')}  fill="#10b981" radius={[4,4,0,0]} maxBarSize={28}/>
+                <Bar dataKey="expense" name={t('transactions.expense')} fill="#ef4444" radius={[4,4,0,0]} maxBarSize={28}/>
               </BarChart>
             </ResponsiveContainer>
           )}
