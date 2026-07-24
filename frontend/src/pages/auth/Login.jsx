@@ -18,7 +18,6 @@ const schema = z.object({
 const Login = () => {
   const { login }    = useAuth();
   const { t, lang, changeLang, languages } = useLang();
-  console.log(lang, t('auth.invalidLogin'));
   const navigate     = useNavigate();
   const [showPwd, setShowPwd] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -43,7 +42,7 @@ const Login = () => {
         { replace: true }
       );
     } catch (error) {
-      setLoginError(t('auth.invalidLogin'));
+      setLoginError('auth.invalidLogin');
     } finally {
       setLoading(false);
     }
@@ -113,7 +112,7 @@ const Login = () => {
             />
             {loginError && (
               <div className="rounded-lg bg-red-100 border border-red-300 text-red-700 px-4 py-3 text-sm">
-                {loginError}
+                {t(loginError)}
               </div>
             )}
             <Button type="submit" loading={loading} className="w-full" size="lg">
