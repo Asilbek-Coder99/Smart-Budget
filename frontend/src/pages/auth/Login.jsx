@@ -40,10 +40,7 @@ const Login = () => {
         { replace: true }
       );
     } catch (error) {
-      setLoginError(
-        error.response?.data?.message ||
-        "Email yoki parol noto'g'ri."
-      );
+      setLoginError(t('auth.invalidLogin'));
     } finally {
       setLoading(false);
     }

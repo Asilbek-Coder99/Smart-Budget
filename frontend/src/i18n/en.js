@@ -74,6 +74,8 @@ const en = {
     welcomeBack:     "Welcome back",
     loginSuccess:    "Logged in successfully",
     registerSuccess: "Account created successfully",
+    invalidLogin:    "Invalid email or password.",
+
   },
 
   nav: {

@@ -76,6 +76,7 @@ const uz = {
     welcomeBack:     "Qaytib keldingiz",
     loginSuccess:    "Muvaffaqiyatli kirdingiz",
     registerSuccess: "Hisob muvaffaqiyatli yaratildi",
+    invalidLogin:    "Email yoki parol noto'g'ri.",
   },
 
   // Navigatsiya

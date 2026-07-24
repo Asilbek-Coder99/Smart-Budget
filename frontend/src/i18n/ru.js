@@ -74,6 +74,8 @@ const ru = {
     welcomeBack:     "С возвращением",
     loginSuccess:    "Вы успешно вошли",
     registerSuccess: "Аккаунт успешно создан",
+    invalidLogin:    "Неверный адрес электронной почты или пароль.",
+
   },
 
   nav: {
